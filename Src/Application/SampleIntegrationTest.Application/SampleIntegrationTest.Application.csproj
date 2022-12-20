@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Mapster" Version="7.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Domain\SampleIntegrationTest.Domain\SampleIntegrationTest.Domain.csproj" />
+	  <ProjectReference Include="..\..\Infrastructure\SampleIntegrationTest.Infrastructure\SampleIntegrationTest.Infrastructure.csproj" />
+	  <ProjectReference Include="..\SampleIntegrationTest.Application.Contract\SampleIntegrationTest.Application.Contract.csproj" />
+	</ItemGroup>
+
+</Project>
