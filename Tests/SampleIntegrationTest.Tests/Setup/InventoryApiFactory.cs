@@ -12,7 +12,7 @@ using SampleIntegrationTest.Api;
 using SampleIntegrationTest.Domain.Meetings.DomainServices;
 using SampleIntegrationTest.Infrastructure.Domain.Meetings;
 using SampleIntegrationTest.Infrastructure.Persistence;
-using SampleIntegrationTest.Tests.Creators;
+using SampleIntegrationTest.Tests.Builders;
 
 namespace SampleIntegrationTest.Tests.Setup
 {
@@ -53,7 +53,7 @@ namespace SampleIntegrationTest.Tests.Setup
                     options.UseSqlServer(_dbContainer.ConnectionString, x => x.MigrationsAssembly(typeof(MeetingTypeConfiguration).Assembly.ToString())
                 );
                 });
-                services.AddTransient<MeetingCreator>();
+                services.AddTransient<MeetingBuilder>();
                 services.AddTransient<ICheckUserFreeTimeService, CheckUserFreeTimeService>();
             }).UseConfiguration(config);
         }

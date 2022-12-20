@@ -1,11 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Sample.SharedKernel.Application;
 using SampleIntegrationTest.Api.Models.Meetings;
 using SampleIntegrationTest.Application.Contract.Meetings.Dto;
-using SampleIntegrationTest.Infrastructure.Persistence;
-using SampleIntegrationTest.Tests.Creators;
+using SampleIntegrationTest.Tests.Builders;
 using SampleIntegrationTest.Tests.Setup;
 using System.Net;
 using System.Net.Http.Json;
@@ -15,11 +13,11 @@ namespace SampleIntegrationTest.Tests.Meetings
 {
     public class MeetingEndpointsTests : IntegrationTestBase
     {
-        private readonly MeetingCreator _meetingCreator;
+        private readonly MeetingBuilder _meetingCreator;
         public MeetingEndpointsTests(InventoryApiFactory apiFactory) : base(apiFactory)
         {
             var scope = apiFactory.Services.CreateScope();
-            _meetingCreator = scope.ServiceProvider.GetRequiredService<MeetingCreator>();
+            _meetingCreator = scope.ServiceProvider.GetRequiredService<MeetingBuilder>();
         }
 
         [Fact]
@@ -62,7 +60,7 @@ namespace SampleIntegrationTest.Tests.Meetings
             // Assert
             Assert.NotNull(retrievedMeetings);
             Assert.True(retrievedMeetings.Items.Any());
-            Assert.Equal(1, retrievedMeetings.Items.Count);
+            Assert.Single(retrievedMeetings.Items);
             Assert.Contains(retrievedMeetings.Items, a => a.HostMsisdn == msisdn);
         }
     }

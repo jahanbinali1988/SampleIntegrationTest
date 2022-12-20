@@ -1,15 +1,14 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using SampleIntegrationTest.Domain.Meetings;
+﻿using SampleIntegrationTest.Domain.Meetings;
 using SampleIntegrationTest.Domain.Meetings.DomainServices;
 using SampleIntegrationTest.Infrastructure.Persistence;
 
-namespace SampleIntegrationTest.Tests.Creators
+namespace SampleIntegrationTest.Tests.Builders
 {
-    public class MeetingCreator
+    public class MeetingBuilder
     {
         private readonly SampleDbContext _dbContext;
         private readonly ICheckUserFreeTimeService _checkUserFreeTimeService;
-        public MeetingCreator(ICheckUserFreeTimeService checkUserFreeTimeService, SampleDbContext dbContext)
+        public MeetingBuilder(ICheckUserFreeTimeService checkUserFreeTimeService, SampleDbContext dbContext)
         {
             this._checkUserFreeTimeService = checkUserFreeTimeService;
             _dbContext = dbContext;
