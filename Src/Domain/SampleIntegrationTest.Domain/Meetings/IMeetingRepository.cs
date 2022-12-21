@@ -1,5 +1,5 @@
-﻿using Sample.SharedKernel.Application;
-using Sample.SharedKernel.Shared;
+﻿using SampleIntegrationTest.SharedKernel.Application;
+using SampleIntegrationTest.SharedKernel.Shared;
 
 namespace SampleIntegrationTest.Domain.Meetings
 {

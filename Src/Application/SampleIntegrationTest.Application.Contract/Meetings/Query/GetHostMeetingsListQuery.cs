@@ -1,4 +1,4 @@
-﻿using Sample.SharedKernel.Application;
+﻿using SampleIntegrationTest.SharedKernel.Application;
 using SampleIntegrationTest.Application.Contract.Meetings.Dto;
 using SampleIntegrationTest.Application.Contract.Shared;
 

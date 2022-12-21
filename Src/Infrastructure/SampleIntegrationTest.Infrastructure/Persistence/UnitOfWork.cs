@@ -1,5 +1,5 @@
-﻿using Sample.SharedKernel.EventProcessing.DomainEvent;
-using Sample.SharedKernel.SeedWork;
+﻿using SampleIntegrationTest.SharedKernel.EventProcessing.DomainEvent;
+using SampleIntegrationTest.SharedKernel.SeedWork;
 
 namespace SampleIntegrationTest.Infrastructure.Persistence
 {

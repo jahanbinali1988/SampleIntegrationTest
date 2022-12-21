@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Sample.SharedKernel.Application;
+using SampleIntegrationTest.SharedKernel.Application;
 using SampleIntegrationTest.Domain.Meetings;
 using SampleIntegrationTest.Infrastructure.Persistence;
 

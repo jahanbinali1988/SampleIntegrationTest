@@ -1,4 +1,4 @@
-﻿using Sample.SharedKernel.SeedWork;
+﻿using SampleIntegrationTest.SharedKernel.SeedWork;
 using SampleIntegrationTest.Domain.Meetings.DomainServices;
 using SampleIntegrationTest.Domain.Shared;
 

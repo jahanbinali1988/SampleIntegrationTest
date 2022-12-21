@@ -15,19 +15,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{D997A710-E923-4FCD-8CF7-FADB6E1BEABF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleIntegrationTest.Api", "Src\Presentation\SampleIntegrationTest.Api\SampleIntegrationTest.Api.csproj", "{E4158FCB-3618-459E-8C83-4E9376D414C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleIntegrationTest.Api", "Src\Presentation\SampleIntegrationTest.Api\SampleIntegrationTest.Api.csproj", "{E4158FCB-3618-459E-8C83-4E9376D414C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleIntegrationTest.Domain", "Src\Domain\SampleIntegrationTest.Domain\SampleIntegrationTest.Domain.csproj", "{B4630392-48F0-422D-8D44-F5290F03AFB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleIntegrationTest.Domain", "Src\Domain\SampleIntegrationTest.Domain\SampleIntegrationTest.Domain.csproj", "{B4630392-48F0-422D-8D44-F5290F03AFB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleIntegrationTest.Application", "Src\Application\SampleIntegrationTest.Application\SampleIntegrationTest.Application.csproj", "{74B95EC5-7D86-4470-A704-F90A1071A802}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleIntegrationTest.Application", "Src\Application\SampleIntegrationTest.Application\SampleIntegrationTest.Application.csproj", "{74B95EC5-7D86-4470-A704-F90A1071A802}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleIntegrationTest.Application.Contract", "Src\Application\SampleIntegrationTest.Application.Contract\SampleIntegrationTest.Application.Contract.csproj", "{3CBDA500-F57D-48A2-8D89-9E5191A4F7ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleIntegrationTest.Application.Contract", "Src\Application\SampleIntegrationTest.Application.Contract\SampleIntegrationTest.Application.Contract.csproj", "{3CBDA500-F57D-48A2-8D89-9E5191A4F7ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleIntegrationTest.Infrastructure", "Src\Infrastructure\SampleIntegrationTest.Infrastructure\SampleIntegrationTest.Infrastructure.csproj", "{8919CCBC-FA5A-45F1-B860-B7559E4FA32D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleIntegrationTest.Infrastructure", "Src\Infrastructure\SampleIntegrationTest.Infrastructure\SampleIntegrationTest.Infrastructure.csproj", "{8919CCBC-FA5A-45F1-B860-B7559E4FA32D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BFD09D0A-9EB7-48D6-AE87-18E4FF218DD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleIntegrationTest.Tests", "Tests\SampleIntegrationTest.Tests\SampleIntegrationTest.Tests.csproj", "{786E537F-E2A8-435A-AC52-EAEC0EE61D2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleIntegrationTest.Tests", "Tests\SampleIntegrationTest.Tests\SampleIntegrationTest.Tests.csproj", "{786E537F-E2A8-435A-AC52-EAEC0EE61D2C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleIntegrationTest.Infrastructure.ThirdParty", "Src\Infrastructure\SampleIntegrationTest.Infrastructure.ThirdParty\SampleIntegrationTest.Infrastructure.ThirdParty.csproj", "{6B9576B6-A7D2-4C82-8CEA-C6CADFECBB24}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SheradKernel", "SheradKernel", "{4A410D3D-D006-4F3C-9A3E-192177985BA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleIntegrationTest.SharedKernel", "SharedKernel\SampleIntegrationTest.SharedKernel\SampleIntegrationTest.SharedKernel.csproj", "{2484241D-DF5A-4B28-A357-C0E728A2D8BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +65,14 @@ Global
 		{786E537F-E2A8-435A-AC52-EAEC0EE61D2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{786E537F-E2A8-435A-AC52-EAEC0EE61D2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{786E537F-E2A8-435A-AC52-EAEC0EE61D2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B9576B6-A7D2-4C82-8CEA-C6CADFECBB24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B9576B6-A7D2-4C82-8CEA-C6CADFECBB24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B9576B6-A7D2-4C82-8CEA-C6CADFECBB24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B9576B6-A7D2-4C82-8CEA-C6CADFECBB24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2484241D-DF5A-4B28-A357-C0E728A2D8BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2484241D-DF5A-4B28-A357-C0E728A2D8BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2484241D-DF5A-4B28-A357-C0E728A2D8BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2484241D-DF5A-4B28-A357-C0E728A2D8BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +88,8 @@ Global
 		{3CBDA500-F57D-48A2-8D89-9E5191A4F7ED} = {470F47E9-4852-4B9C-AF12-E9373AE30BC0}
 		{8919CCBC-FA5A-45F1-B860-B7559E4FA32D} = {74274C64-E60D-4979-B792-7624C697CF0F}
 		{786E537F-E2A8-435A-AC52-EAEC0EE61D2C} = {BFD09D0A-9EB7-48D6-AE87-18E4FF218DD2}
+		{6B9576B6-A7D2-4C82-8CEA-C6CADFECBB24} = {74274C64-E60D-4979-B792-7624C697CF0F}
+		{2484241D-DF5A-4B28-A357-C0E728A2D8BF} = {4A410D3D-D006-4F3C-9A3E-192177985BA0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0F47E01A-0F36-4C78-A193-1504616CCB56}

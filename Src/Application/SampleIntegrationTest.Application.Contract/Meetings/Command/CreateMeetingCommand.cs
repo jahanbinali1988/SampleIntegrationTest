@@ -1,5 +1,5 @@
-﻿using Sample.SharedKernel.Application;
-using SampleIntegrationTest.Application.Contract.Meetings.Dto;
+﻿using SampleIntegrationTest.Application.Contract.Meetings.Dto;
+using SampleIntegrationTest.SharedKernel.Application;
 
 namespace SampleIntegrationTest.Application.Contract.Meetings.Command
 {

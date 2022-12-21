@@ -1,6 +1,7 @@
 ﻿using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Configurations;
 using DotNet.Testcontainers.Containers;
+using DotNet.Testcontainers.Images;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -8,33 +9,38 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using SampleIntegrationTest.Api;
 using SampleIntegrationTest.Domain.Meetings.DomainServices;
 using SampleIntegrationTest.Infrastructure.Domain.Meetings;
 using SampleIntegrationTest.Infrastructure.Persistence;
 using SampleIntegrationTest.Tests.Builders;
+using System.ComponentModel;
 
 namespace SampleIntegrationTest.Tests.Setup
 {
-    public class InventoryApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
+    public class SampleIntegrationApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     {
         private readonly TestcontainerDatabase _dbContainer;
+        private readonly TestcontainersContainer _serviceContainer;
 
-        public InventoryApiFactory()
+        public SampleIntegrationApiFactory()
         {
             _dbContainer = new TestcontainersBuilder<MsSqlTestcontainer>()
                 .WithDatabase(new MsSqlTestcontainerConfiguration
                 {
-                    Database = "WeatherApp",
+                    Database = "SampleIntegrationTestDb" + DateTime.Now.Ticks,
                     Password = "2@LaiNw)PDvs^t>L!Ybt]6H^%h3U>M",
                 })
-                .WithName("SqlDb")
+                .WithName("SampleIntegrationTestSql" + DateTime.Now.Ticks)
                 .WithEnvironment("ACCEPT_EULA", "Y")
                 .WithEnvironment("TrustServerCertificate", "True")
                 .WithEnvironment("Trusted_Connection", "True")
                 .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
                 .WithCleanUp(true)
                 .Build();
+
+            _serviceContainer = new TestcontainersBuilder<TestcontainersContainer>()
+              .WithImage("webapplication2")
+              .WithDockerEndpoint("49167").Build();
         }
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -64,6 +70,8 @@ namespace SampleIntegrationTest.Tests.Setup
             using var scope = Services.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<SampleDbContext>();
             dbContext.Database.EnsureCreated();
+
+            await _serviceContainer.StartAsync();
         }
 
         public new async Task DisposeAsync() => await _dbContainer.DisposeAsync();

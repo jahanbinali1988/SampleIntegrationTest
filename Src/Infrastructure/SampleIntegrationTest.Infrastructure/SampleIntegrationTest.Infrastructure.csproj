@@ -7,7 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Sample.SharedKernel" Version="1.0.0" />
+		<PackageReference Include="Mapster" Version="7.2.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.0">
 			<PrivateAssets>all</PrivateAssets>
@@ -16,6 +16,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\..\SharedKernel\SampleIntegrationTest.SharedKernel\SampleIntegrationTest.SharedKernel.csproj" />
 	  <ProjectReference Include="..\..\Domain\SampleIntegrationTest.Domain\SampleIntegrationTest.Domain.csproj" />
 	</ItemGroup>
 

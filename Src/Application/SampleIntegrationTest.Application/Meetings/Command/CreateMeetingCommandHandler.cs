@@ -1,6 +1,6 @@
 ﻿using Mapster;
-using Sample.SharedKernel.Application;
-using Sample.SharedKernel.SeedWork;
+using SampleIntegrationTest.SharedKernel.Application;
+using SampleIntegrationTest.SharedKernel.SeedWork;
 using SampleIntegrationTest.Application.Contract.Meetings.Command;
 using SampleIntegrationTest.Application.Contract.Meetings.Dto;
 using SampleIntegrationTest.Domain.Meetings;

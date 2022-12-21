@@ -1,11 +1,11 @@
 ﻿using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Sample.SharedKernel.Application;
+using SampleIntegrationTest.SharedKernel.Application;
 using SampleIntegrationTest.Api.Models.Meetings;
 using SampleIntegrationTest.Application.Contract.Meetings.Command;
-using SampleIntegrationTest.Application.Contract.Meetings.Dto;
 using SampleIntegrationTest.Application.Contract.Meetings.Query;
+using SampleIntegrationTest.Infrastructure.ThirdParty;
 
 namespace SampleIntegrationTest.Api.Controllers
 {
@@ -13,14 +13,15 @@ namespace SampleIntegrationTest.Api.Controllers
     [Route("meeting")]
     public class MeetingController : ControllerBase
     {
-
         private readonly IMediator _mediator;
+        private readonly IThirdPartyService _thirdPartyService;
         private readonly ILogger<MeetingController> _logger;
 
-        public MeetingController(IMediator mediator, ILogger<MeetingController> logger)
+        public MeetingController(IMediator mediator, ILogger<MeetingController> logger, IThirdPartyService thirdPartyService)
         {
             _mediator = mediator;
             _logger = logger;
+            _thirdPartyService = thirdPartyService;
         }
 
         [HttpPost]
@@ -33,14 +34,22 @@ namespace SampleIntegrationTest.Api.Controllers
         }
 
 
-        [HttpGet("{msisdn:required}/meetings")]
+        [HttpGet("{msisdn:required}")]
         public async Task<ActionResult<Pagination<MeetingViewModel>>> GetMeetingListAsync([FromRoute] long msisdn, [FromQuery] GetListRequest request)
         {
             var query = new GetHostMeetingsListQuery(msisdn, request.Offset, request.Count);
 
-            var meetings = await _mediator.Send(query, HttpContext.RequestAborted);
+            var meetings = await _mediator.Send(query);
 
             return meetings.Adapt<Pagination<MeetingViewModel>>();
+        }
+
+
+        [HttpGet("{id:guid}/details")]
+        public async Task<ActionResult<MeetingDetailsViewModel>> GetMeetingListAsync([FromRoute] Guid id)
+        {
+            var details = await _thirdPartyService.GetMeetingDetailsAsync(id);
+            return details.Adapt<MeetingDetailsViewModel>();
         }
     }
 }

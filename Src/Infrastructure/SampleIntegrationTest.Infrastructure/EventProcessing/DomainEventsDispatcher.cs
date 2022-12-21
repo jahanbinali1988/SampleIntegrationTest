@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using Sample.SharedKernel.EventProcessing.DomainEvent;
-using Sample.SharedKernel.SeedWork;
+using SampleIntegrationTest.SharedKernel.EventProcessing.DomainEvent;
+using SampleIntegrationTest.SharedKernel.SeedWork;
 using SampleIntegrationTest.Infrastructure.Persistence;
 
 namespace SampleIntegrationTest.Infrastructure.EventProcessing

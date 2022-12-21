@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Sample.SharedKernel.SeedWork;
-using Sample.SharedKernel.Shared;
+using SampleIntegrationTest.SharedKernel.SeedWork;
+using SampleIntegrationTest.SharedKernel.Shared;
 using SampleIntegrationTest.Infrastructure.Persistence.Extensions;
 
 namespace SampleIntegrationTest.Infrastructure.Persistence

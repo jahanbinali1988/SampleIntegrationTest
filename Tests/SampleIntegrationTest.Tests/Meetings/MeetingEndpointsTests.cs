@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using Sample.SharedKernel.Application;
+using SampleIntegrationTest.SharedKernel.Application;
 using SampleIntegrationTest.Api.Models.Meetings;
 using SampleIntegrationTest.Application.Contract.Meetings.Dto;
 using SampleIntegrationTest.Tests.Builders;
@@ -14,7 +14,7 @@ namespace SampleIntegrationTest.Tests.Meetings
     public class MeetingEndpointsTests : IntegrationTestBase
     {
         private readonly MeetingBuilder _meetingCreator;
-        public MeetingEndpointsTests(InventoryApiFactory apiFactory) : base(apiFactory)
+        public MeetingEndpointsTests(SampleIntegrationApiFactory apiFactory) : base(apiFactory)
         {
             var scope = apiFactory.Services.CreateScope();
             _meetingCreator = scope.ServiceProvider.GetRequiredService<MeetingBuilder>();
@@ -62,6 +62,24 @@ namespace SampleIntegrationTest.Tests.Meetings
             Assert.True(retrievedMeetings.Items.Any());
             Assert.Single(retrievedMeetings.Items);
             Assert.Contains(retrievedMeetings.Items, a => a.HostMsisdn == msisdn);
+        }
+
+        [Fact]
+        public async Task GetMeetingDetailsAsync_Works_Correct()
+        {
+            // Arrange
+            var msisdn = 9165770705;
+            var endDate = DateTimeOffset.Now.AddHours(1);
+            var startDate = DateTimeOffset.Now;
+            var id = await _meetingCreator.AddMeetingAsync(msisdn, startDate, endDate);
+
+            // Act
+            var response = await base._client.GetAsync($"/meeting/{id}/details");
+            var retrievedMeetings = await response.Content.ReadFromJsonAsync<MeetingDetailsViewModel>();
+
+            // Assert
+            Assert.NotNull(retrievedMeetings);
+            Assert.Equal(id, retrievedMeetings.Id);
         }
     }
 }
