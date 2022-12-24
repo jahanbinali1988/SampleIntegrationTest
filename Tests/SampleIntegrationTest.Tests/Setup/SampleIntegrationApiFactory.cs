@@ -21,7 +21,6 @@ namespace SampleIntegrationTest.Tests.Setup
     {
         private readonly TestcontainerDatabase _dbContainer;
         private readonly TestcontainersContainer _serviceContainer;
-
         public SampleIntegrationApiFactory()
         {
             _dbContainer = new TestcontainersBuilder<MsSqlTestcontainer>()
@@ -39,8 +38,13 @@ namespace SampleIntegrationTest.Tests.Setup
                 .Build();
 
             _serviceContainer = new TestcontainersBuilder<TestcontainersContainer>()
-              .WithImage("webapplication2")
-              .WithDockerEndpoint("49167").Build();
+                .WithImage("webapplication2:dev")
+                .WithPortBinding(80, true)
+                .WithExposedPort(80)
+                .WithPortBinding(49163, 80)
+                .WithEntrypoint("/bin/sh", "-c")
+                .WithCommand($"while true; do echo \"$MAGIC_NUMBER\" | nc -l -p {80}; done")
+                .Build();
         }
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -66,14 +70,27 @@ namespace SampleIntegrationTest.Tests.Setup
 
         public async Task InitializeAsync()
         {
-            await _dbContainer.StartAsync();
-            using var scope = Services.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<SampleDbContext>();
-            dbContext.Database.EnsureCreated();
+            try
+            {
+                await _dbContainer.StartAsync();
+                using var scope = Services.CreateScope();
+                var dbContext = scope.ServiceProvider.GetRequiredService<SampleDbContext>();
+                dbContext.Database.EnsureCreated();
 
-            await _serviceContainer.StartAsync();
+                await _serviceContainer.StartAsync().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
-        public new async Task DisposeAsync() => await _dbContainer.DisposeAsync();
+        public async Task DisposeAsync()
+        {
+            await _dbContainer.DisposeAsync();
+
+            await _serviceContainer.DisposeAsync();
+        }
     }
 }

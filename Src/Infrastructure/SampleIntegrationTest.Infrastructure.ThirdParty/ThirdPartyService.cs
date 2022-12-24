@@ -25,9 +25,9 @@ namespace SampleIntegrationTest.Infrastructure.ThirdParty
                 if (!response.IsSuccessStatusCode)
                     throw new Exception();
 
-                ApiResponse<MeetingDetailsResponseDto> result = await response.ReadContentAs<ApiResponse<MeetingDetailsResponseDto>>();
+                MeetingDetailsResponseDto result = await response.ReadContentAs<MeetingDetailsResponseDto>();
 
-                return result.Data;
+                return result;
             }
             catch (Exception)
             {

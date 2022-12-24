@@ -6,6 +6,11 @@ namespace SampleIntegrationTest.Domain.Meetings
 {
     public class Meeting : Entity<Guid>, IAggregateRoot
     {
+        public Meeting() : base()
+        {
+            Id = Guid.NewGuid();
+            Version = BitConverter.GetBytes(1);
+        }
         public long HostMsisdn { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
@@ -18,8 +23,7 @@ namespace SampleIntegrationTest.Domain.Meetings
             {
                 HostMsisdn = hostMsisdn,
                 StartDate = startDate,
-                EndDate = endDate,
-                Id = Guid.NewGuid()
+                EndDate = endDate
             };
         }
     }
