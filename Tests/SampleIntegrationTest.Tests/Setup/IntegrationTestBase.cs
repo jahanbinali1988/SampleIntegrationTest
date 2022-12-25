@@ -1,11 +1,11 @@
 ﻿namespace SampleIntegrationTest.Tests.Setup
 {
-    public class IntegrationTestBase : IClassFixture<SampleIntegrationApiFactory>
+    public class IntegrationTestBase 
     {
-        protected readonly HttpClient _client;
-        public IntegrationTestBase(SampleIntegrationApiFactory apiFactory)
+        protected readonly SampleIntegrationApiFactory _apiFactory;
+        public IntegrationTestBase()
         {
-            _client = apiFactory.CreateClient();
+            _apiFactory = new SampleIntegrationApiFactory();
         }
     }
 }

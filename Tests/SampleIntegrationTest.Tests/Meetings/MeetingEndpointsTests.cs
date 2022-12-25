@@ -13,18 +13,20 @@ namespace SampleIntegrationTest.Tests.Meetings
 {
     public class MeetingEndpointsTests : IntegrationTestBase
     {
-        private readonly MeetingBuilder _meetingCreator;
-        public MeetingEndpointsTests(SampleIntegrationApiFactory apiFactory) : base(apiFactory)
+        private MeetingBuilder _meetingCreator;
+        public MeetingEndpointsTests() :base()
         {
-            var scope = apiFactory.Services.CreateScope();
-            _meetingCreator = scope.ServiceProvider.GetRequiredService<MeetingBuilder>();
         }
 
         [Fact]
         public async Task CreateMeetingsAsync_Works_Correct()
         {
+            await _apiFactory.InitializeAsync();
+            var scope = base._apiFactory.Services.CreateScope();
+            _meetingCreator = scope.ServiceProvider.GetRequiredService<MeetingBuilder>();
+
             // Arrange
-            var msisdn = 9224957626;
+            var msisdn = 9165770705;
             var request = new CreateMeetingRequest()
             {
                 EndDate = DateTimeOffset.Now.AddDays(1),
@@ -35,7 +37,8 @@ namespace SampleIntegrationTest.Tests.Meetings
             var httpContent = new StringContent(serializeRequest, UnicodeEncoding.UTF8, "application/json");
 
             // Act
-            var response = await base._client.PostAsync($"meeting", httpContent);
+            HttpClient _client = _apiFactory.CreateClient();
+            var response = await _client.PostAsync($"meeting", httpContent);
             var retrievedMeeting = await response.Content.ReadFromJsonAsync<MeetingResponseDto>();
 
             // Assert
@@ -47,6 +50,10 @@ namespace SampleIntegrationTest.Tests.Meetings
         [Fact]
         public async Task GetAllMeetingsAsync_Works_Correct()
         {
+            await _apiFactory.InitializeAsync();
+            var scope = base._apiFactory.Services.CreateScope();
+            _meetingCreator = scope.ServiceProvider.GetRequiredService<MeetingBuilder>();
+
             // Arrange
             var msisdn = 9165770705;
             var endDate = DateTimeOffset.Now.AddHours(1);
@@ -54,7 +61,8 @@ namespace SampleIntegrationTest.Tests.Meetings
             await _meetingCreator.AddMeetingAsync(msisdn, startDate, endDate);
 
             // Act
-            var response = await base._client.GetAsync($"/meeting/{msisdn}/meetings?Offset=0&Count=10");
+            HttpClient _client = _apiFactory.CreateClient();
+            var response = await _client.GetAsync($"/meeting/{msisdn}?Offset=0&Count=10");
             var retrievedMeetings = await response.Content.ReadFromJsonAsync<Pagination<MeetingViewModel>>();
 
             // Assert
@@ -67,6 +75,10 @@ namespace SampleIntegrationTest.Tests.Meetings
         [Fact]
         public async Task GetMeetingDetailsAsync_Works_Correct()
         {
+            await _apiFactory.InitializeAsync();
+            var scope = base._apiFactory.Services.CreateScope();
+            _meetingCreator = scope.ServiceProvider.GetRequiredService<MeetingBuilder>();
+
             // Arrange
             var msisdn = 9165770705;
             var endDate = DateTimeOffset.Now.AddHours(1);
@@ -74,7 +86,8 @@ namespace SampleIntegrationTest.Tests.Meetings
             var id = await _meetingCreator.AddMeetingAsync(msisdn, startDate, endDate);
 
             // Act
-            var response = await base._client.GetAsync($"/meeting/{id}/details");
+            HttpClient _client = _apiFactory.CreateClient();
+            var response = await _client.GetAsync($"/meeting/{id}/details");
             var retrievedMeetings = await response.Content.ReadFromJsonAsync<MeetingDetailsViewModel>();
 
             // Assert
