@@ -20,7 +20,8 @@ namespace SampleIntegrationTest.Infrastructure.ThirdParty
         {
             try
             {
-                var response = await _httpClient.GetAsync(string.Format(_configurations.GetMeetingDetailUrl, meetingId));
+                var url = string.Format(_configurations.GetMeetingDetailUrl, meetingId);
+                var response = await _httpClient.GetAsync(url);
 
                 if (!response.IsSuccessStatusCode)
                     throw new Exception();

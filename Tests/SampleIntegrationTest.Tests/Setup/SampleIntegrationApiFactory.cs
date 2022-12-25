@@ -1,4 +1,5 @@
-﻿using DotNet.Testcontainers.Builders;
+﻿using Docker.DotNet.Models;
+using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Configurations;
 using DotNet.Testcontainers.Containers;
 using DotNet.Testcontainers.Images;
@@ -20,6 +21,7 @@ namespace SampleIntegrationTest.Tests.Setup
     public class SampleIntegrationApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     {
         private readonly TestcontainerDatabase _dbContainer;
+        private int _thirdPartyFakePort;
         private readonly TestcontainersContainer _serviceContainer;
         public SampleIntegrationApiFactory()
         {
@@ -27,9 +29,11 @@ namespace SampleIntegrationTest.Tests.Setup
                 .WithDatabase(new MsSqlTestcontainerConfiguration
                 {
                     Database = "SampleIntegrationTestDb" + DateTime.Now.Ticks,
-                    Password = "2@LaiNw)PDvs^t>L!Ybt]6H^%h3U>M",
+                    Password = "J@han14153",
                 })
                 .WithName("SampleIntegrationTestSql" + DateTime.Now.Ticks)
+                .WithEnvironment("MSSQL_SA_PASSWORD ", "J@han14153")
+                .WithEnvironment("SA_PASSWORD ", "J@han14153")
                 .WithEnvironment("ACCEPT_EULA", "Y")
                 .WithEnvironment("TrustServerCertificate", "True")
                 .WithEnvironment("Trusted_Connection", "True")
@@ -37,22 +41,24 @@ namespace SampleIntegrationTest.Tests.Setup
                 .WithCleanUp(true)
                 .Build();
 
+            GenerateRandomPort();
             _serviceContainer = new TestcontainersBuilder<TestcontainersContainer>()
-                .WithImage("webapplication2:dev")
+                .WithImage("webapplication2:latest")
                 .WithPortBinding(80, true)
                 .WithExposedPort(80)
-                .WithPortBinding(49163, 80)
-                .WithEntrypoint("/bin/sh", "-c")
-                .WithCommand($"while true; do echo \"$MAGIC_NUMBER\" | nc -l -p {80}; done")
+                .WithPortBinding(_thirdPartyFakePort, 80)
                 .Build();
         }
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             var dbConnection = _dbContainer.ConnectionString + "TrustServerCertificate=True;MultipleActiveResultSets=True";
+            var thirdPartyBaseUrl = $"http://{_serviceContainer.Hostname}:{_thirdPartyFakePort}"; //$"localhost:{_thirdPartyFakePort}";
+            var thirdPartyServiceAddress = thirdPartyBaseUrl + "/meeting/{0}/details";
             IConfiguration config = new ConfigurationBuilder()
               .AddInMemoryCollection(new[]{
                   new KeyValuePair<string, string>("ConnectionStrings:DefaultConnection", dbConnection),
+                  new KeyValuePair<string, string>("ThirdPartyConfiguration:GetMeetingDetailUrl", thirdPartyServiceAddress)
                }).Build();
 
             builder.ConfigureTestServices(services =>
@@ -70,20 +76,12 @@ namespace SampleIntegrationTest.Tests.Setup
 
         public async Task InitializeAsync()
         {
-            try
-            {
-                await _dbContainer.StartAsync();
-                using var scope = Services.CreateScope();
-                var dbContext = scope.ServiceProvider.GetRequiredService<SampleDbContext>();
-                dbContext.Database.EnsureCreated();
+            await _dbContainer.StartAsync();
+            using var scope = Services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<SampleDbContext>();
+            dbContext.Database.EnsureCreated();
 
-                await _serviceContainer.StartAsync().ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
+            await _serviceContainer.StartAsync().ConfigureAwait(true);
         }
 
         public async Task DisposeAsync()
@@ -91,6 +89,17 @@ namespace SampleIntegrationTest.Tests.Setup
             await _dbContainer.DisposeAsync();
 
             await _serviceContainer.DisposeAsync();
+        }
+
+        private int GenerateRandomPort()
+        {
+            if (_thirdPartyFakePort != default)
+                return _thirdPartyFakePort;
+
+            Random rnd = new Random();
+            var port = rnd.Next(1000, 5000);
+            _thirdPartyFakePort = port;
+            return port;
         }
     }
 }
