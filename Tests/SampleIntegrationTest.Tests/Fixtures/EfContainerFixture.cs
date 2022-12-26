@@ -6,7 +6,7 @@ using System.Data.Common;
 
 namespace SampleIntegrationTest.Tests.Fixtures
 {
-    public sealed class EfContainerFixture : DatabaseFixture<MsSqlTestcontainer, DbConnection>
+    public sealed class EfContainerFixture : BaseDatabaseFixture<MsSqlTestcontainer, DbConnection>
     {
         private readonly TestcontainerDatabaseConfiguration configuration = new MsSqlTestcontainerConfiguration
         {

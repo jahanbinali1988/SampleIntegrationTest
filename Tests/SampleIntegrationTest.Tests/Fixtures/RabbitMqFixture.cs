@@ -5,7 +5,7 @@ using RabbitMQ.Client;
 
 namespace SampleIntegrationTest.Tests.Fixtures
 {
-    public sealed class RabbitMqFixture : DatabaseFixture<RabbitMqTestcontainer, IConnection>
+    public sealed class RabbitMqFixture : BaseDatabaseFixture<RabbitMqTestcontainer, IConnection>
     {
         private readonly TestcontainerMessageBrokerConfiguration configuration = new RabbitMqTestcontainerConfiguration { Username = "rabbitmq", Password = "rabbitmq" };
 

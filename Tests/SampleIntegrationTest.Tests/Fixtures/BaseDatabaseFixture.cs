@@ -2,7 +2,7 @@
 
 namespace SampleIntegrationTest.Tests.Fixtures
 {
-    public abstract class DatabaseFixture<TDockerContainer, TDatabaseConnection> : IAsyncLifetime, IDisposable
+    public abstract class BaseDatabaseFixture<TDockerContainer, TDatabaseConnection> : IAsyncLifetime, IDisposable
         where TDockerContainer : ITestcontainersContainer
     {
         public TDockerContainer Container { get; protected set; }

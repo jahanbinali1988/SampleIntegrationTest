@@ -5,7 +5,7 @@ using StackExchange.Redis;
 
 namespace SampleIntegrationTest.Tests.Fixtures
 {
-    public sealed class RedisFixture : DatabaseFixture<RedisTestcontainer, IConnectionMultiplexer>
+    public sealed class RedisFixture : BaseDatabaseFixture<RedisTestcontainer, IConnectionMultiplexer>
     {
         private readonly TestcontainerDatabaseConfiguration configuration = new RedisTestcontainerConfiguration();
 
