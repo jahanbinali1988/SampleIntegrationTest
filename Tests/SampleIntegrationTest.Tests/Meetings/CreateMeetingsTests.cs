@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using SampleIntegrationTest.Api.Models.Meetings;
 using SampleIntegrationTest.Application.Contract.Meetings.Dto;
+using SampleIntegrationTest.Tests.Builders;
 using SampleIntegrationTest.Tests.Setup;
 using System.Net;
 using System.Net.Http.Json;
@@ -13,8 +15,7 @@ namespace SampleIntegrationTest.Tests.Meetings
         [Fact]
         public async Task CreateMeetingsAsync_Works_Correct()
         {
-            await Init(FakeApiType.Maximal);
-
+            await InitAsync(FakeApiType.Minimal);
             // Arrange
             var msisdn = 9165770705;
             var request = new CreateMeetingRequest()
@@ -34,6 +35,11 @@ namespace SampleIntegrationTest.Tests.Meetings
             Assert.NotNull(retrievedMeeting);
             Assert.Equal(msisdn, retrievedMeeting.HostMsisdn);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        protected override async Task InitAsync(FakeApiType fakeApiType)
+        {
+            await base.InitAsync(fakeApiType);
         }
     }
 }

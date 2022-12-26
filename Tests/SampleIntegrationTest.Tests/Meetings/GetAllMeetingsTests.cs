@@ -2,15 +2,18 @@
 using SampleIntegrationTest.Api.Models.Meetings;
 using SampleIntegrationTest.Tests.Setup;
 using System.Net.Http.Json;
+using Microsoft.Extensions.DependencyInjection;
+using SampleIntegrationTest.Tests.Builders;
 
 namespace SampleIntegrationTest.Tests.Meetings
 {
     public class GetAllMeetingsTests : BaseIntegrationTest
     {
+        private MeetingBuilder _meetingBuilder;
         [Fact]
         public async Task GetAllMeetingsAsync_Works_Correct()
         {
-            await Init(FakeApiType.Maximal);
+            await InitAsync(FakeApiType.Minimal);
 
             // Arrange
             var msisdn = 9165770705;
@@ -29,5 +32,11 @@ namespace SampleIntegrationTest.Tests.Meetings
             Assert.Contains(retrievedMeetings.Items, a => a.HostMsisdn == msisdn);
         }
 
+        protected override async Task InitAsync(FakeApiType fakeApiType)
+        {
+            await base.InitAsync(fakeApiType);
+            var scope = _fakeApi.Services.CreateScope();
+            _meetingBuilder = scope.ServiceProvider.GetRequiredService<MeetingBuilder>();
+        }
     }
 }

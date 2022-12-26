@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using SampleIntegrationTest.Tests.Builders;
-using SampleIntegrationTest.Tests.Setup;
+﻿using SampleIntegrationTest.Tests.Setup;
 
 namespace SampleIntegrationTest.Tests.Meetings
 {
@@ -8,14 +6,11 @@ namespace SampleIntegrationTest.Tests.Meetings
     {
         protected BaseFakeApi _fakeApi;
         protected HttpClient _httpClient;
-        protected MeetingBuilder _meetingBuilder;
 
-        protected async Task Init(FakeApiType fakeApiType)
+        protected virtual async Task InitAsync(FakeApiType fakeApiType) 
         {
             _fakeApi = FakeApiFactory.GetApi(fakeApiType);
             await _fakeApi.InitializeAsync();
-            var scope = _fakeApi.Services.CreateScope();
-            _meetingBuilder = scope.ServiceProvider.GetRequiredService<MeetingBuilder>();
             _httpClient = _fakeApi.CreateClient();
         }
     }
