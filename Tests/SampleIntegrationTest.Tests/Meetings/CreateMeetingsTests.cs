@@ -8,13 +8,12 @@ using System.Text;
 
 namespace SampleIntegrationTest.Tests.Meetings
 {
-    public class CreateMeetingsTests
+    public class CreateMeetingsTests : BaseIntegrationTest
     {
         [Fact]
         public async Task CreateMeetingsAsync_Works_Correct()
         {
-            var _apiFactory = FakeApiFactory.GetApi(FakeApiType.Minimal);
-            await _apiFactory.InitializeAsync();
+            await Init(FakeApiType.Maximal);
 
             // Arrange
             var msisdn = 9165770705;
@@ -28,8 +27,7 @@ namespace SampleIntegrationTest.Tests.Meetings
             var httpContent = new StringContent(serializeRequest, UnicodeEncoding.UTF8, "application/json");
 
             // Act
-            HttpClient _client = _apiFactory.CreateClient();
-            var response = await _client.PostAsync($"meeting", httpContent);
+            var response = await _httpClient.PostAsync($"meeting", httpContent);
             var retrievedMeeting = await response.Content.ReadFromJsonAsync<MeetingResponseDto>();
 
             // Assert
