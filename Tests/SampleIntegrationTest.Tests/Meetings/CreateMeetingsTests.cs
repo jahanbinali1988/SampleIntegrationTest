@@ -1,8 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SampleIntegrationTest.Api.Models.Meetings;
 using SampleIntegrationTest.Application.Contract.Meetings.Dto;
-using SampleIntegrationTest.Tests.Builders;
 using SampleIntegrationTest.Tests.Setup;
 using System.Net;
 using System.Net.Http.Json;
@@ -10,20 +8,13 @@ using System.Text;
 
 namespace SampleIntegrationTest.Tests.Meetings
 {
-    public class CreateMeetingsTests : IntegrationTestBase
+    public class CreateMeetingsTests
     {
-        private MeetingBuilder _meetingCreator;
-        public CreateMeetingsTests() :base()
-        {
-        }
-
         [Fact]
         public async Task CreateMeetingsAsync_Works_Correct()
         {
-            base._apiFactory = new SampleIntegrationApiFactory();
+            var _apiFactory = new SampleIntegrationApiFactory();
             await _apiFactory.InitializeAsync();
-            var scope = base._apiFactory.Services.CreateScope();
-            _meetingCreator = scope.ServiceProvider.GetRequiredService<MeetingBuilder>();
 
             // Arrange
             var msisdn = 9165770705;
@@ -46,6 +37,5 @@ namespace SampleIntegrationTest.Tests.Meetings
             Assert.Equal(msisdn, retrievedMeeting.HostMsisdn);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-
     }
 }

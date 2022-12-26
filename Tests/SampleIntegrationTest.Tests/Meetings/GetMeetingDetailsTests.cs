@@ -6,20 +6,15 @@ using System.Net.Http.Json;
 
 namespace SampleIntegrationTest.Tests.Meetings
 {
-    public class GetMeetingDetailsTests : IntegrationTestBase
+    public class GetMeetingDetailsTests
     {
-        private MeetingBuilder _meetingCreator;
-        public GetMeetingDetailsTests() : base()
-        {
-        }
-
         [Fact]
         public async Task GetMeetingDetailsAsync_Works_Correct()
         {
-            base._apiFactory = new SampleIntegrationApiFactory();
+            var _apiFactory = new SampleIntegrationApiFactory();
             await _apiFactory.InitializeAsync();
-            var scope = base._apiFactory.Services.CreateScope();
-            _meetingCreator = scope.ServiceProvider.GetRequiredService<MeetingBuilder>();
+            var scope = _apiFactory.Services.CreateScope();
+            var _meetingCreator = scope.ServiceProvider.GetRequiredService<MeetingBuilder>();
 
             // Arrange
             var msisdn = 9165770705;

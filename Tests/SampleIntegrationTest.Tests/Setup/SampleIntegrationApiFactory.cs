@@ -69,6 +69,8 @@ namespace SampleIntegrationTest.Tests.Setup
             await _thirdPartyServiceContainer.DisposeAsync();
             await _rabbitMqFixture.DisposeAsync();
             await _redisFixture.DisposeAsync();
+
+            GC.SuppressFinalize(this);
         }
     }
 }
