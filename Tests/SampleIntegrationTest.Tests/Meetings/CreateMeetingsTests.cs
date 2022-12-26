@@ -13,7 +13,7 @@ namespace SampleIntegrationTest.Tests.Meetings
         [Fact]
         public async Task CreateMeetingsAsync_Works_Correct()
         {
-            var _apiFactory = new SampleIntegrationApiFactory();
+            var _apiFactory = FakeApiFactory.GetApi(FakeApiType.Minimal);
             await _apiFactory.InitializeAsync();
 
             // Arrange

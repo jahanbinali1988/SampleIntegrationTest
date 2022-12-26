@@ -11,7 +11,7 @@ namespace SampleIntegrationTest.Tests.Meetings
         [Fact]
         public async Task GetMeetingDetailsAsync_Works_Correct()
         {
-            var _apiFactory = new SampleIntegrationApiFactory();
+            var _apiFactory = FakeApiFactory.GetApi(FakeApiType.Maximal);
             await _apiFactory.InitializeAsync();
             var scope = _apiFactory.Services.CreateScope();
             var _meetingCreator = scope.ServiceProvider.GetRequiredService<MeetingBuilder>();
