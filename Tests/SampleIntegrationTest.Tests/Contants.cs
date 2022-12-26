@@ -1,4 +1,4 @@
-﻿namespace SampleIntegrationTest.Tests.Setup
+﻿namespace SampleIntegrationTest.Tests
 {
     internal class ConstantVariables
     {

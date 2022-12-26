@@ -1,12 +1,11 @@
 ﻿using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
-using Microsoft.VisualBasic;
 
-namespace SampleIntegrationTest.Tests.Setup
+namespace SampleIntegrationTest.Tests.Fixtures
 {
-    public class ThirdPartyContainerBuilder
+    public class ThirdPartyContainerFixture : IAsyncLifetime
     {
-        private static TestcontainersContainer? _serviceContainer;
+        public ITestcontainersContainer Container;
         private int _thirdPartyFakePort;
         public int ThirdPartyFakePort
         {
@@ -22,26 +21,29 @@ namespace SampleIntegrationTest.Tests.Setup
                 _thirdPartyFakePort = value;
             }
         }
-
-        public TestcontainersContainer Build()
+        public ThirdPartyContainerFixture()
         {
             GenerateRandomPort();
-            TestcontainersContainer serviceContainer =
-                new TestcontainersBuilder<TestcontainersContainer>()
+            Container = new TestcontainersBuilder<TestcontainersContainer>()
                 .WithImage("webapplication2:latest")
                 .WithPortBinding(80, true)
                 .WithExposedPort(80)
                 .WithPortBinding(_thirdPartyFakePort, 80)
                 .Build();
-
-            _serviceContainer = serviceContainer;
-            return serviceContainer;
         }
+
+        public async Task InitializeAsync()
+        {
+            await Container.StartAsync();
+        }
+
+        public Task DisposeAsync()
+        {
+            return this.Container.DisposeAsync().AsTask();
+        }
+
         public KeyValuePair<string, string>[] GetConfiguration()
         {
-            if (_serviceContainer == null)
-                Build();
-
             List<KeyValuePair<string, string>> configs = new List<KeyValuePair<string, string>>();
 
             var thirdPartyBaseUrl = $"{ConstantVariables.ThirdPartyServiceBaseUrl}{_thirdPartyFakePort}";

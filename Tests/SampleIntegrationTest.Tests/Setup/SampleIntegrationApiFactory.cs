@@ -1,6 +1,4 @@
-﻿using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Configurations;
-using DotNet.Testcontainers.Containers;
+﻿using DotNet.Testcontainers.Containers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -12,30 +10,31 @@ using SampleIntegrationTest.Domain.Meetings.DomainServices;
 using SampleIntegrationTest.Infrastructure.Domain.Meetings;
 using SampleIntegrationTest.Infrastructure.Persistence;
 using SampleIntegrationTest.Tests.Builders;
+using SampleIntegrationTest.Tests.Fixtures;
 
 namespace SampleIntegrationTest.Tests.Setup
 {
     public class SampleIntegrationApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     {
-        private readonly TestcontainerDatabase _dbContainer;
-        private readonly TestcontainersContainer _thirdPartyServiceContainer;
-
-        private readonly ThirdPartyContainerBuilder _thirdPartyBuilder;
-        private readonly EfContainerBuilder _efBuilder;
+        private readonly EfContainerFixture _databaseContainer;
+        private readonly ThirdPartyContainerFixture _thirdPartyServiceContainer;
+        private readonly RabbitMqFixture _rabbitMqFixture;
+        private readonly RedisFixture _redisFixture;
         public SampleIntegrationApiFactory()
         {
-            _efBuilder = new EfContainerBuilder();
-            _dbContainer = _efBuilder.Build();
-
-            _thirdPartyBuilder = new ThirdPartyContainerBuilder();
-            _thirdPartyServiceContainer = _thirdPartyBuilder.Build();
+            _databaseContainer = new EfContainerFixture();
+            _thirdPartyServiceContainer = new ThirdPartyContainerFixture();
+            _rabbitMqFixture = new RabbitMqFixture();
+            _redisFixture = new RedisFixture();
         }
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             var configurations = new List<KeyValuePair<string, string>>();
-            configurations.AddRange(_efBuilder.GetConfiguration());
-            configurations.AddRange(_thirdPartyBuilder.GetConfiguration());
+            configurations.AddRange(_databaseContainer.GetConfiguration());
+            configurations.AddRange(_thirdPartyServiceContainer.GetConfiguration());
+            configurations.AddRange(_rabbitMqFixture.GetConfiguration());
+            configurations.AddRange(_redisFixture.GetConfiguration());
 
             IConfiguration config = new ConfigurationBuilder().AddInMemoryCollection(configurations).Build();
 
@@ -54,19 +53,22 @@ namespace SampleIntegrationTest.Tests.Setup
 
         public async Task InitializeAsync()
         {
-            await _dbContainer.StartAsync();
+            await _databaseContainer.InitializeAsync();
+            await _thirdPartyServiceContainer.InitializeAsync().ConfigureAwait(true);
+            await _rabbitMqFixture.InitializeAsync().ConfigureAwait(true);
+            await _redisFixture.InitializeAsync().ConfigureAwait(true);
+
             using var scope = Services.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<SampleDbContext>();
             dbContext.Database.EnsureCreated();
-
-            await _thirdPartyServiceContainer.StartAsync().ConfigureAwait(true);
         }
 
         public async Task DisposeAsync()
         {
-            await _dbContainer.DisposeAsync();
-
+            await _databaseContainer.DisposeAsync();
             await _thirdPartyServiceContainer.DisposeAsync();
+            await _rabbitMqFixture.DisposeAsync();
+            await _redisFixture.DisposeAsync();
         }
     }
 }

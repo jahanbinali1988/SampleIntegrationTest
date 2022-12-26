@@ -2,10 +2,9 @@
 {
     public class IntegrationTestBase 
     {
-        protected readonly SampleIntegrationApiFactory _apiFactory;
+        protected SampleIntegrationApiFactory _apiFactory;
         public IntegrationTestBase()
         {
-            _apiFactory = new SampleIntegrationApiFactory();
         }
     }
 }
