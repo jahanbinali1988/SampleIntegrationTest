@@ -1,4 +1,4 @@
-This is a sample code targeted to use the "TestContainers package" for integration tests.
+This is a sample code targeted to use the "[TestContainers package](https://www.nuget.org/packages/Testcontainers)" for integration tests. you can find more complex examples by checking the official package's GitHub repository, [here](https://github.com/testcontainers/testcontainers-dotnet).
 
 In this project, I created a sample API to save data in an SQL server by EF core7, third-party API, etc. Then I started to develop some tests for these APIs.
 
